@@ -40,10 +40,16 @@ const MessagesList = () => {
 
   if (!currentChat) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-[#1a1d29]">
-        <div ref={welcomeRef} className="text-center">
-          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="flex-1 flex items-center justify-center bg-black backdrop-blur-sm relative">
+        {/* Purple/Blue gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/15 to-purple-800/20 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(147,51,234,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.1),transparent_50%)] pointer-events-none" />
+        
+        <div ref={welcomeRef} className="text-center max-w-md mx-auto p-8 relative z-10">
+          <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl border border-purple-400/30 relative overflow-hidden">
+            {/* Animated background glow */}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 to-blue-500/30 animate-pulse rounded-full blur-xl" />
+            <svg className="w-10 h-10 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -52,54 +58,103 @@ const MessagesList = () => {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-semibold mb-3 text-gray-100">Welcome to ChatGPT Clone</h2>
-          <p className="text-gray-400 max-w-md mx-auto">
+          <h2 className="text-3xl font-bold mb-4 text-white bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            Welcome to Nokat AI
+          </h2>
+          <p className="text-gray-400 max-w-md mx-auto leading-relaxed text-lg">
             Select a chat from the sidebar or create a new one to get started with your AI conversation.
           </p>
+          
+          {/* Animated suggestions */}
+          <div className="mt-8 space-y-3">
+            <div className="glass-enhanced bg-black/20 border border-purple-600/20 rounded-xl p-4 text-left hover:border-purple-400/40 transition-all duration-300 cursor-pointer group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+              <div className="flex items-center space-x-3 relative z-10">
+                <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center group-hover:bg-purple-500/30 transition-colors duration-300">
+                  <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <span className="text-gray-300 text-sm">Start a creative writing session</span>
+              </div>
+            </div>
+            
+            <div className="glass-enhanced bg-black/20 border border-blue-600/20 rounded-xl p-4 text-left hover:border-blue-400/40 transition-all duration-300 cursor-pointer group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+              <div className="flex items-center space-x-3 relative z-10">
+                <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:bg-blue-500/30 transition-colors duration-300">
+                  <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </div>
+                <span className="text-gray-300 text-sm">Get help with problem solving</span>
+              </div>
+            </div>
+            
+            <div className="glass-enhanced bg-black/20 border border-pink-600/20 rounded-xl p-4 text-left hover:border-pink-400/40 transition-all duration-300 cursor-pointer group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+              <div className="flex items-center space-x-3 relative z-10">
+                <div className="w-8 h-8 bg-pink-500/20 rounded-lg flex items-center justify-center group-hover:bg-pink-500/30 transition-colors duration-300">
+                  <svg className="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+                <span className="text-gray-300 text-sm">Learn something new today</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="flex-1 overflow-y-auto bg-[#1a1d29]">
-      {/* Today indicator */}
-      <div className="flex justify-center py-4">
-        <div className="px-4 py-1 bg-[#2a2d3a] border border-gray-600/50 rounded-full">
-          <span className="text-sm text-gray-300">Today</span>
+    <div className="flex-1 overflow-y-auto bg-black backdrop-blur-sm custom-scrollbar relative">
+      {/* Purple/Blue gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/15 to-purple-800/20 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(147,51,234,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.1),transparent_50%)] pointer-events-none" />
+      
+      {/* Enhanced Today indicator */}
+      <div className="flex justify-center py-6 relative z-10">
+        <div className="px-6 py-2 glass-enhanced border border-purple-400/30 rounded-full shadow-lg relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 animate-pulse rounded-full" />
+          <span className="text-sm text-purple-300 font-medium relative z-10">Today</span>
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
         </div>
       </div>
 
       <div ref={containerRef} className="px-6 pb-6">
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-8">
           {messages.map((message, i) => {
             const isUser = message.role === "user"
             const isStreamingMessage = message.id === "streaming"
 
             return (
-              <div key={message.id || i} className={`message-item flex ${isUser ? "justify-end" : "justify-start"}`}>
+              <div key={message.id || i} className={`message-item flex ${isUser ? "justify-end" : "justify-start"} group`}>
                 {!isUser && (
                   <div className="flex-shrink-0 mr-4">
-                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center shadow-lg border border-purple-400/30 group-hover:shadow-purple-500/30 group-hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 animate-pulse rounded-full" />
+                      <svg className="w-5 h-5 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                          d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
                         />
                       </svg>
                     </div>
                   </div>
                 )}
 
-                <div className="flex flex-col max-w-[80%]">
-                  {/* User label */}
+                <div className="flex flex-col max-w-[85%] w-full">
+                  {/* Enhanced User label */}
                   {isUser && (
-                    <div className="flex items-center justify-end mb-2">
-                      <span className="text-sm text-gray-400 mr-3">You</span>
-                      <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-center justify-end mb-3">
+                      <span className="text-sm text-purple-300 mr-3 font-medium">You</span>
+                      <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center shadow-lg border border-purple-500/40 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 animate-pulse rounded-full" />
+                        <svg className="w-4 h-4 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -111,31 +166,51 @@ const MessagesList = () => {
                     </div>
                   )}
 
-                  {/* AI label */}
+                  {/* Enhanced AI label */}
                   {!isUser && (
-                    <div className="flex items-center mb-2">
-                      <span className="text-sm text-gray-400 ml-12">Nokat AI</span>
+                    <div className="flex items-center mb-3">
+                      <span className="text-sm text-purple-300 ml-14 font-medium">Nokat AI</span>
                     </div>
                   )}
 
-                  {/* Message content */}
+                  {/* Enhanced Message content */}
                   <div
-                    className={`rounded-xl px-4 py-3 ${
+                    className={`rounded-2xl px-6 py-4 shadow-lg relative overflow-hidden transition-all duration-300 group-hover:shadow-xl border ${
                       isUser
-                        ? "bg-[#2a2d3a] border border-gray-600/50 text-gray-100 ml-auto"
-                        : "bg-[#2a2d3a] border border-gray-600/50 text-gray-100"
+                        ? "bg-gradient-to-br from-purple-600/90 to-blue-600/90 border-purple-400/40 text-white ml-auto shadow-purple-500/20 group-hover:shadow-purple-500/40"
+                        : "glass-enhanced bg-black/40 border-purple-600/30 text-gray-100 shadow-gray-900/20 group-hover:shadow-purple-900/40"
                     }`}
                   >
-                    <div className="whitespace-pre-wrap break-words">
+                    {/* Enhanced glow effect for user messages */}
+                    {isUser && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-300 -z-10" />
+                    )}
+
+                    {/* Enhanced glow effect for assistant messages */}
+                    {!isUser && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-400/10 to-blue-400/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-300 -z-10" />
+                    )}
+
+                    <div className="whitespace-pre-wrap break-words leading-relaxed relative z-10">
                       {message.content}
-                      {isStreamingMessage && <span className="inline-block w-2 h-5 bg-gray-400 ml-1 animate-pulse" />}
+                      {isStreamingMessage && <span className="inline-block w-2 h-5 bg-purple-400 ml-1 animate-pulse rounded-sm" />}
+                    </div>
+
+                    {/* Message timestamp */}
+                    <div className={`flex ${isUser ? 'justify-start' : 'justify-end'} mt-3`}>
+                      <span className="text-xs opacity-60">
+                        {new Date(message.timestamp || Date.now()).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Action buttons for AI messages */}
+                  {/* Enhanced Action buttons for AI messages */}
                   {!isUser && !isStreamingMessage && (
-                    <div className="flex items-center space-x-2 mt-3 ml-12">
-                      <button className="p-1.5 text-gray-500 hover:text-gray-300 transition-colors duration-200">
+                    <div className="flex items-center space-x-3 mt-4 ml-14 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                      <button className="p-2 text-gray-500 hover:text-purple-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-purple-400/40 hover:shadow-lg hover:shadow-purple-500/20">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path
                             strokeLinecap="round"
@@ -145,12 +220,12 @@ const MessagesList = () => {
                           />
                         </svg>
                       </button>
-                      <button className="p-1.5 text-gray-500 hover:text-gray-300 transition-colors duration-200">
+                      <button className="p-2 text-gray-500 hover:text-green-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-green-400/40 hover:shadow-lg hover:shadow-green-500/20">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 13l3 3 7-7" />
                         </svg>
                       </button>
-                      <button className="p-1.5 text-gray-500 hover:text-gray-300 transition-colors duration-200">
+                      <button className="p-2 text-gray-500 hover:text-blue-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-blue-400/40 hover:shadow-lg hover:shadow-blue-500/20">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path
                             strokeLinecap="round"
@@ -160,7 +235,7 @@ const MessagesList = () => {
                           />
                         </svg>
                       </button>
-                      <button className="p-1.5 text-gray-500 hover:text-gray-300 transition-colors duration-200">
+                      <button className="p-2 text-gray-500 hover:text-pink-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-pink-400/40 hover:shadow-lg hover:shadow-pink-500/20">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path
                             strokeLinecap="round"
@@ -171,9 +246,9 @@ const MessagesList = () => {
                         </svg>
                       </button>
 
-                      {/* Model selector */}
+                      {/* Enhanced Model selector */}
                       <div className="ml-auto">
-                        <select className="bg-[#1a1d29] border border-gray-600/50 rounded px-2 py-1 text-xs text-gray-300 focus:outline-none focus:border-blue-500/50">
+                        <select className="glass-enhanced bg-black/40 border border-purple-600/30 rounded-lg px-3 py-2 text-xs text-gray-300 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 hover:border-purple-400/40">
                           <option>NokatFlax</option>
                           <option>Nokat 2.0</option>
                         </select>
@@ -185,11 +260,11 @@ const MessagesList = () => {
             )
           })}
 
-          {/* Streaming indicator */}
+          {/* Enhanced Streaming indicator */}
           {isStreaming && messages.length > 0 && messages[messages.length - 1].role === "user" && (
-            <div className="message-item flex justify-start">
+            <div className="message-item flex justify-start group">
               <div className="flex-shrink-0 mr-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-lg border border-blue-400/30 animate-pulse">
                   <svg
                     className="w-5 h-5 text-white animate-spin"
                     fill="none"
@@ -200,24 +275,24 @@ const MessagesList = () => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
                     />
                   </svg>
                 </div>
               </div>
-              <div className="flex flex-col">
-                <div className="flex items-center mb-2">
-                  <span className="text-sm text-gray-400 ml-12">Nokat AI</span>
+              <div className="flex flex-col max-w-[85%]">
+                <div className="flex items-center mb-3">
+                  <span className="text-sm text-blue-300 ml-14 font-medium">Nokat AI</span>
                 </div>
-                <div className="bg-[#2a2d3a] border border-gray-600/50 rounded-xl px-4 py-3">
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                <div className="glass-enhanced border border-gray-600/30 rounded-2xl px-6 py-4 shadow-lg">
+                  <div className="flex space-x-2">
+                    <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce" />
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"
                       style={{ animationDelay: "0.1s" }}
                     />
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"
                       style={{ animationDelay: "0.2s" }}
                     />
                   </div>

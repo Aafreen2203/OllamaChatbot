@@ -14,43 +14,42 @@ const Sidebar: React.FC = () => {
   const footerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Initial sidebar animation
+    // Enhanced initial sidebar animation
     if (sidebarRef.current) {
-      gsap.fromTo(sidebarRef.current, { x: -300, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" })
+      gsap.fromTo(
+        sidebarRef.current, 
+        { x: -350, opacity: 0, scale: 0.95 }, 
+        { x: 0, opacity: 1, scale: 1, duration: 1, ease: "power3.out" }
+      )
     }
 
-    // Stagger animation for header, chats, and footer
-    const timeline = gsap.timeline({ delay: 0.3 })
+    // Enhanced stagger animation for sections
+    const timeline = gsap.timeline({ delay: 0.4 })
     timeline
-      .fromTo(headerRef.current, { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" })
-      .fromTo(chatsRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.3")
-      .fromTo(
-        footerRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
-        "-=0.3",
-      )
+      .fromTo(headerRef.current, { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" })
+      .fromTo(chatsRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.4")
+      .fromTo(footerRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, "-=0.4")
   }, [])
 
   useEffect(() => {
-    // Animate chat items when they change
+    // Enhanced animation for chat items
     if (chatsRef.current) {
       const chatItems = chatsRef.current.querySelectorAll(".chat-item")
       gsap.fromTo(
         chatItems,
-        { x: -20, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: "power2.out" },
+        { x: -30, opacity: 0, scale: 0.9 },
+        { x: 0, opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: "power3.out" },
       )
     }
   }, [chats])
 
   const handleNewChat = () => {
-    // Animate button press
+    // Enhanced button animation
     const button = headerRef.current?.querySelector("button")
     if (button) {
       gsap.to(button, {
-        scale: 0.95,
-        duration: 0.1,
+        scale: 0.92,
+        duration: 0.15,
         yoyo: true,
         repeat: 1,
         ease: "power2.inOut",
@@ -88,66 +87,72 @@ const Sidebar: React.FC = () => {
   return (
     <div
       ref={sidebarRef}
-      className="w-80 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white flex flex-col h-full relative overflow-hidden shadow-2xl"
+      className="w-64 text-white flex flex-col h-full relative overflow-hidden shadow-2xl border-r border-purple-700/30 bg-black"
     >
-      {/* Animated background elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20 pointer-events-none" />
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+      {/* Enhanced animated background elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/15 to-purple-800/20 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(147,51,234,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.1),transparent_50%)] pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 via-blue-500 to-purple-400" />
+      
+      {/* Floating glow orbs */}
+      <div className="absolute top-20 right-10 w-32 h-32 bg-purple-500/8 rounded-full blur-2xl animate-float-glow" />
+      <div className="absolute bottom-32 left-8 w-24 h-24 bg-blue-600/6 rounded-full blur-xl animate-float-glow" style={{ animationDelay: '2s' }} />
 
       {/* Header */}
-      <div ref={headerRef} className="relative p-6 border-b border-gray-700/50">
+      <div ref={headerRef} className="relative p-4 border-b border-purple-700/40">
         <button
           onClick={handleNewChat}
-          className="group w-full bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white py-4 px-6 rounded-2xl transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
+          className="group w-full glass-enhanced hover:bg-gradient-to-r hover:from-purple-600/20 hover:to-blue-500/20 text-white py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-2xl hover:shadow-[0_20px_40px_rgba(147,51,234,0.2)] transform hover:scale-[1.02] active:scale-[0.98] border border-purple-400/20 card-hover-3d relative overflow-hidden"
         >
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
           <div className="relative">
-            <div className="absolute inset-0 bg-white/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-white/25 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <svg
               className="relative w-5 h-5 transform group-hover:rotate-90 transition-transform duration-300"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
             </svg>
           </div>
-          <span className="font-semibold">New Chat</span>
+          <span className="font-semibold text-sm relative z-10">New Chat</span>
         </button>
       </div>
 
       {/* Chat History */}
       <div
         ref={chatsRef}
-        className="flex-1 overflow-y-auto p-4 space-y-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent"
+        className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar"
       >
         {chats.map((chat, index) => (
           <div key={chat.id} className="chat-item" style={{ animationDelay: `${index * 0.1}s` }}>
             <button
               onClick={() => handleSelectChat(chat.id)}
-              className={`group w-full text-left p-4 rounded-xl transition-all duration-300 relative overflow-hidden transform hover:scale-[1.02] ${
+              className={`group w-full text-left p-3 rounded-xl transition-all duration-300 relative overflow-hidden transform hover:scale-[1.01] border ${
                 currentChat?.id === chat.id
-                  ? "bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white shadow-lg"
-                  : "text-gray-300 hover:text-white hover:bg-gray-800/50"
+                  ? "glass-enhanced bg-gradient-to-r from-purple-600/30 to-blue-500/30 text-white shadow-xl border-purple-400/40"
+                  : "glass-enhanced text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-blue-400/10 border-gray-600/20 hover:border-purple-400/30"
               }`}
             >
-              {/* Hover effect background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* Enhanced hover effect background */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/15 to-blue-400/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
 
               <div className="relative flex items-center justify-between">
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium truncate text-lg mb-1">{chat.title}</div>
-                  <div className="text-sm opacity-70">{formatDate(chat.createdAt)}</div>
+                  <div className="font-medium truncate text-sm mb-1">{chat.title}</div>
+                  <div className="text-xs opacity-70">{formatDate(chat.createdAt)}</div>
                 </div>
 
-                <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
+                <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
                   <div
-                    className="p-2 rounded-lg hover:bg-white/10 cursor-pointer transition-colors duration-200"
+                    className="p-1.5 rounded-lg hover:bg-white/10 cursor-pointer transition-all duration-200 glass-enhanced border border-gray-600/20"
                     onClick={(e) => {
                       e.stopPropagation()
                       // TODO: Implement edit functionality
                     }}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -157,13 +162,13 @@ const Sidebar: React.FC = () => {
                     </svg>
                   </div>
                   <div
-                    className="p-2 rounded-lg hover:bg-red-500/20 cursor-pointer transition-colors duration-200"
+                    className="p-1.5 rounded-lg hover:bg-red-500/20 cursor-pointer transition-all duration-200 glass-enhanced border border-red-500/20"
                     onClick={(e) => {
                       e.stopPropagation()
                       handleDeleteChat(chat.id)
                     }}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -180,16 +185,16 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <div ref={footerRef} className="relative p-6 border-t border-gray-700/50">
+      {/* <div ref={footerRef} className="relative p-6 border-t border-gray-700/40">
         <div className="text-center">
-          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-gray-800/50 to-gray-700/50 rounded-full backdrop-blur-sm">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            <span className="text-sm text-gray-400">Powered by Ollama + Gemma</span>
+          <div className="inline-flex items-center space-x-3 px-5 py-3 glass-enhanced rounded-2xl backdrop-blur-xl border border-gray-600/30 shadow-xl">
+            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
+            <span className="text-sm text-gray-300 font-semibold">Powered by Ollama + Gemma</span>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
 
-export default Sidebar;
+export default Sidebar

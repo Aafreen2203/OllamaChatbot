@@ -13,9 +13,13 @@ const MessageForm = () => {
   const buttonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    // Initial form animation
+    // Initial form animation with enhanced effects
     if (formRef.current) {
-      gsap.fromTo(formRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" })
+      gsap.fromTo(
+        formRef.current, 
+        { y: 50, opacity: 0, scale: 0.95 }, 
+        { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "power3.out", delay: 0.2 }
+      )
     }
   }, [])
 
@@ -23,11 +27,11 @@ const MessageForm = () => {
     e?.preventDefault()
     if (!content.trim() || !currentChat) return
 
-    // Animate button on submit
+    // Enhanced button animation
     if (buttonRef.current) {
       gsap.to(buttonRef.current, {
-        scale: 0.95,
-        duration: 0.1,
+        scale: 0.9,
+        duration: 0.15,
         yoyo: true,
         repeat: 1,
         ease: "power2.inOut",
@@ -37,9 +41,13 @@ const MessageForm = () => {
     await sendMessage(content.trim())
     setContent("")
 
-    // Reset textarea height
+    // Reset textarea height with smooth animation
     if (textareaRef.current) {
-      textareaRef.current.style.height = "auto"
+      gsap.to(textareaRef.current, {
+        height: "auto",
+        duration: 0.3,
+        ease: "power2.out"
+      })
     }
   }
 
@@ -53,77 +61,114 @@ const MessageForm = () => {
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value)
 
-    // Auto-resize textarea
+    // Auto-resize textarea with smooth animation
     const textarea = e.target
     textarea.style.height = "auto"
-    textarea.style.height = Math.min(textarea.scrollHeight, 200) + "px"
+    const newHeight = Math.min(textarea.scrollHeight, 200)
+    gsap.to(textarea, {
+      height: newHeight + "px",
+      duration: 0.2,
+      ease: "power2.out"
+    })
   }
 
   const handleStop = () => {
+    // Animate stop button
+    if (buttonRef.current) {
+      gsap.to(buttonRef.current, {
+        scale: 0.9,
+        duration: 0.1,
+        yoyo: true,
+        repeat: 1,
+        ease: "power2.inOut",
+      })
+    }
     stopStreaming()
   }
 
   return (
-    <div className="border-t border-gray-700/50 bg-[#1a1d29] px-6 py-4">
-      <div className="max-w-4xl mx-auto">
-        <div ref={formRef}>
-          <form onSubmit={handleSubmit} className="relative">
-            <div className="flex items-end space-x-3">
-              <div className="flex-1 relative">
-                <textarea
-                  ref={textareaRef}
-                  value={content}
-                  onChange={handleInput}
-                  onKeyDown={handleKeyDown}
-                  placeholder={currentChat ? "Type your message..." : "Create or select a chat to start messaging"}
-                  disabled={!currentChat}
-                  className="w-full resize-none rounded-xl border border-gray-600/50 bg-[#2a2d3a] px-4 py-3 pr-12 text-gray-100 placeholder-gray-400 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/50 disabled:bg-gray-800/50 disabled:cursor-not-allowed transition-all duration-200"
-                  rows={1}
-                  style={{ minHeight: "48px", maxHeight: "200px" }}
-                />
+    <div className="relative">
+      {/* Enhanced background with multiple layers - consistent with chat area */}
+      <div className="absolute inset-0 bg-black" />
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/15 to-purple-800/20" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(147,51,234,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.1),transparent_50%)]" />
+      
+      {/* Glowing overlay for consistency */}
+      <div className="absolute inset-0 bg-gradient-to-t from-purple-500/5 via-transparent to-blue-500/5" />
 
-                {/* Send/Stop button */}
-                <div className="absolute right-2 bottom-2">
-                  {isStreaming ? (
-                    <button
-                      ref={buttonRef}
-                      type="button"
-                      onClick={handleStop}
-                      className="p-2 text-gray-400 hover:text-red-400 focus:outline-none transition-colors duration-200"
-                      title="Stop generation"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 10h6v4H9z" />
-                      </svg>
-                    </button>
-                  ) : (
-                    <button
-                      ref={buttonRef}
-                      type="submit"
-                      disabled={!content.trim() || !currentChat}
-                      className="p-2 text-gray-400 hover:text-blue-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-                      title="Send message (Enter)"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                        />
-                      </svg>
-                    </button>
-                  )}
+      <div className="relative px-6 py-8">
+        <div className="max-w-4xl mx-auto">
+          <div ref={formRef}>
+            <form onSubmit={handleSubmit} className="relative">
+              <div className="flex items-end space-x-4">
+                <div className="flex-1 relative group">
+                  {/* Purple/Blue glowing border effect - no blue line */}
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-500/40 via-blue-500/30 to-purple-500/40 opacity-60 blur-sm animate-pulse" />
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-500/30 via-blue-500/20 to-purple-500/30 opacity-40" />
+                  
+                  <div className="relative bg-black/90 backdrop-blur-sm rounded-3xl overflow-hidden border-0 shadow-2xl">
+                    <textarea
+                      ref={textareaRef}
+                      value={content}
+                      onChange={handleInput}
+                      onKeyDown={handleKeyDown}
+                      placeholder={currentChat ? "Type your message..." : "Create or select a chat to start messaging"}
+                      disabled={!currentChat}
+                      className="relative w-full resize-none border-0 bg-transparent px-6 py-5 pr-16 text-gray-100 placeholder-gray-400 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-0 disabled:bg-transparent disabled:cursor-not-allowed rounded-3xl"
+                      rows={1}
+                      style={{ minHeight: "64px", maxHeight: "200px", outline: "none", boxShadow: "none" }}
+                    />
+                  </div>
+
+                  {/* Enhanced Send/Stop button - centered vertically */}
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    {isStreaming ? (
+                      <button
+                        ref={buttonRef}
+                        type="button"
+                        onClick={handleStop}
+                        className="group relative p-3.5 text-red-400 hover:text-red-300 focus:outline-none transition-all duration-300 transform hover:scale-110 btn-3d glass-enhanced rounded-xl"
+                        title="Stop generation"
+                      >
+                        <div className="absolute inset-0 bg-red-500/15 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-red-500/25 to-red-600/25 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <svg className="relative w-6 h-6 z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="10" strokeWidth={2.5} />
+                          <rect x="9" y="9" width="6" height="6" strokeWidth={2.5} />
+                        </svg>
+                        <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent rounded-xl pointer-events-none" />
+                      </button>
+                    ) : (
+                      <button
+                        ref={buttonRef}
+                        type="submit"
+                        disabled={!content.trim() || !currentChat}
+                        className="group relative p-3.5 text-blue-400 hover:text-blue-300 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-110 disabled:hover:scale-100 btn-3d glass-enhanced rounded-xl"
+                        title="Send message (Enter)"
+                      >
+                        <div className="absolute inset-0 bg-blue-500/15 rounded-xl opacity-0 group-hover:opacity-100 group-disabled:opacity-0 transition-opacity duration-300 blur-sm" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/25 to-blue-600/25 rounded-xl opacity-0 group-hover:opacity-100 group-disabled:opacity-0 transition-opacity duration-300" />
+                        <svg
+                          className="relative w-6 h-6 z-10 transform group-hover:rotate-12 group-disabled:rotate-0 transition-transform duration-300"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2.5}
+                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                          />
+                        </svg>
+                        <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent rounded-xl pointer-events-none" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
