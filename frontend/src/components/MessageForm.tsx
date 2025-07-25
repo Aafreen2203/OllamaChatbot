@@ -13,6 +13,27 @@ const MessageForm = () => {
   const buttonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
+    // Add CSS animations for border travel effect
+    const style = document.createElement('style')
+    style.textContent = `
+      @keyframes travel-horizontal {
+        0% { background-position: -100% 0; }
+        100% { background-position: 100% 0; }
+      }
+      
+      @keyframes travel-vertical {
+        0% { background-position: 0 -100%; }
+        100% { background-position: 0 100%; }
+      }
+    `
+    document.head.appendChild(style)
+    
+    return () => {
+      document.head.removeChild(style)
+    }
+  }, [])
+
+  useEffect(() => {
     // Initial form animation with enhanced effects
     if (formRef.current) {
       gsap.fromTo(
@@ -108,6 +129,41 @@ const MessageForm = () => {
                     
                     {/* Pulsing glow effect */}
                     <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-purple-500/20 via-blue-500/15 to-purple-500/20 opacity-0 group-focus-within:opacity-100 blur-lg animate-pulse transition-opacity duration-500" />
+                    
+                    {/* Traveling border glow effect on hover */}
+                    <div className="absolute -inset-1 rounded-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-300 overflow-hidden">
+                      {/* Top border segment - covers full width including rounded corners */}
+                      <div className="absolute -top-0.5 -left-2 -right-2 h-1 rounded-t-3xl" 
+                           style={{ 
+                             background: 'linear-gradient(90deg, transparent 0%, transparent 30%, rgba(147, 51, 234, 0.4) 40%, rgba(59, 130, 246, 0.6) 50%, rgba(147, 51, 234, 0.4) 60%, transparent 70%, transparent 100%)',
+                             backgroundSize: '300% 100%',
+                             animation: 'travel-horizontal 4s linear infinite'
+                           }} />
+                      
+                      {/* Right border segment - covers full height including rounded corners */}
+                      <div className="absolute -top-2 -right-0.5 -bottom-2 w-1 rounded-r-3xl" 
+                           style={{ 
+                             background: 'linear-gradient(180deg, transparent 0%, transparent 30%, rgba(59, 130, 246, 0.6) 40%, rgba(147, 51, 234, 0.4) 50%, rgba(59, 130, 246, 0.6) 60%, transparent 70%, transparent 100%)',
+                             backgroundSize: '100% 300%',
+                             animation: 'travel-vertical 4s linear infinite 1s'
+                           }} />
+                      
+                      {/* Bottom border segment - covers full width including rounded corners */}
+                      <div className="absolute -bottom-0.5 -left-2 -right-2 h-1 rounded-b-3xl" 
+                           style={{ 
+                             background: 'linear-gradient(270deg, transparent 0%, transparent 30%, rgba(147, 51, 234, 0.4) 40%, rgba(59, 130, 246, 0.6) 50%, rgba(147, 51, 234, 0.4) 60%, transparent 70%, transparent 100%)',
+                             backgroundSize: '300% 100%',
+                             animation: 'travel-horizontal 4s linear infinite 2s'
+                           }} />
+                      
+                      {/* Left border segment - covers full height including rounded corners */}
+                      <div className="absolute -top-2 -left-0.5 -bottom-2 w-1 rounded-l-3xl" 
+                           style={{ 
+                             background: 'linear-gradient(0deg, transparent 0%, transparent 30%, rgba(59, 130, 246, 0.6) 40%, rgba(147, 51, 234, 0.4) 50%, rgba(59, 130, 246, 0.6) 60%, transparent 70%, transparent 100%)',
+                             backgroundSize: '100% 300%',
+                             animation: 'travel-vertical 4s linear infinite 3s'
+                           }} />
+                    </div>
                     
                     {/* Transparent textarea container with glass effect */}
                     <div className="relative rounded-3xl overflow-hidden border border-purple-500/20 group-focus-within:border-purple-500/40 transition-colors duration-300 bg-black/20 backdrop-blur-md">

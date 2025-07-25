@@ -79,11 +79,14 @@ const Layout = ({
           {/* Circle 1 - Top left */}
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-purple-500/30 to-blue-500/30 rounded-full blur-3xl" />
           
-          {/* Circle 2 - Bottom right */}
-          <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-br from-blue-500/25 to-purple-500/25 rounded-full blur-3xl" />
+          {/* Circle 2 - Bottom right (increased size) */}
+          <div className="absolute -bottom-32 -right-32 w-[32rem] h-[32rem] bg-gradient-to-br from-blue-500/25 to-purple-500/25 rounded-full blur-3xl" />
           
           {/* Circle 3 - Center */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-purple-400/20 to-blue-400/20 rounded-full blur-3xl" />
+          
+          {/* Circle 4 - Top right (new) */}
+          <div className="absolute -top-32 -right-32 w-80 h-80 bg-gradient-to-br from-purple-600/25 to-pink-500/25 rounded-full blur-3xl" />
         </div>
 
         <Sidebar />
