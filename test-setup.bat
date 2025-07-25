@@ -18,7 +18,7 @@ if %errorlevel% equ 0 (
     echo ✓ Frontend server is running and responding
 ) else (
     echo ✗ Frontend server is not responding
-    echo   Make sure to run: cd nextjs-chatgpt-tutorial && npm run dev
+    echo   Make sure to run: cd chatbotFrontend && npm run dev
 )
 
 echo.
