@@ -52,7 +52,7 @@ const MessagesList = () => {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl">
+    <div className="flex-1 overflow-y-auto bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl">
       <div ref={containerRef} className="max-w-4xl mx-auto px-4 py-6">
         {messages.map((message) => (
           <div key={message.id} className="message-item mb-6 group">

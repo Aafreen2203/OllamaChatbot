@@ -45,14 +45,14 @@ const MessageForm = () => {
 
   // Center the form when no chat is active
   const containerClass = currentChat 
-    ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-700/50 p-4"
-    : "flex-1 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl"
+    ? "bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl p-4"
+    : "flex-1 flex items-center justify-center bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl"
 
   return (
     <div className={containerClass}>
       <div ref={formRef} className={`max-w-4xl mx-auto ${!currentChat ? 'w-full max-w-2xl' : ''}`}>
         <form onSubmit={handleSubmit} className="relative">
-          <div className={`backdrop-blur-lg rounded-5xl shadow-xl ${!currentChat ? 'p-6' : 'p-4'}`}>
+          <div className={` rounded-5xl ${!currentChat ? 'p-6' : 'p-4'}`}>
             <div className="relative">
               <textarea
                 ref={textareaRef}

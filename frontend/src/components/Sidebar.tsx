@@ -104,7 +104,7 @@ const Sidebar: React.FC = () => {
   return (
     <div
       ref={sidebarRef}
-      className="w-64 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl flex flex-col h-full border-r border-gray-200/50 dark:border-gray-700/50 shadow-xl"
+      className="w-64 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl flex flex-col h-full shadow-xl"
     >
       {/* Header */}
       <div ref={headerRef} className="p-3">
@@ -128,7 +128,7 @@ const Sidebar: React.FC = () => {
         </div>
         <button
           onClick={handleNewChat}
-          className="w-full bg-white/90 dark:bg-gray-800/90 hover:bg-gray-50/90 dark:hover:bg-gray-700/90 text-gray-900 dark:text-gray-100 py-2.5 px-3 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 border border-gray-200/50 dark:border-gray-600/50 text-sm font-medium backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+          className="w-full bg-white/90 dark:bg-gray-800/90 hover:bg-gray-50/90 dark:hover:bg-gray-700/90 text-gray-900 dark:text-gray-100 py-2.5 px-3 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 text-sm font-medium backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
         >
           <svg
             className="w-4 h-4"
