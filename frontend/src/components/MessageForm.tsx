@@ -91,12 +91,9 @@ const MessageForm = () => {
       {/* Form container - positioned normally without covering chats */}
       <div className="relative">
         <div className="relative px-6 py-8">
-          {/* Enhanced background for input area only */}
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/15 to-purple-800/20" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(147,51,234,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.1),transparent_50%)]" />
+          {/* Remove separate background - let it inherit from parent */}
           
-          {/* Subtle top border glow */}
+          {/* Subtle top border glow only */}
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
 
           <div className="max-w-4xl mx-auto relative">

@@ -12,8 +12,6 @@ const MessagesList = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const welcomeRef = useRef<HTMLDivElement>(null)
-  const backgroundRef = useRef<HTMLDivElement>(null)
-  const gradientRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -40,24 +38,13 @@ const MessagesList = () => {
     }
   }, [messages])
 
-  useEffect(() => {
-    // Update background height to match content
-    if (containerRef.current && backgroundRef.current && gradientRef.current) {
-      const contentHeight = containerRef.current.scrollHeight
-      const viewportHeight = window.innerHeight
-      const finalHeight = Math.max(contentHeight, viewportHeight)
-      
-      backgroundRef.current.style.height = `${finalHeight}px`
-      gradientRef.current.style.height = `${finalHeight}px`
-    }
-  }, [messages, isStreaming])
+
 
   if (!currentChat) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-black backdrop-blur-sm relative">
-        {/* Purple/Blue gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/15 to-purple-800/20 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(147,51,234,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.1),transparent_50%)] pointer-events-none" />
+      <div className="flex-1 flex items-center justify-center relative">
+        {/* Simple static background - same as chat area */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 shadow-2xl border border-purple-400/30 relative overflow-hidden" />
         
         <div ref={welcomeRef} className="text-center max-w-md mx-auto p-8 relative z-10">
           <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl border border-purple-400/30 relative overflow-hidden">
@@ -124,18 +111,8 @@ const MessagesList = () => {
 
   return (
     <div className="flex-1 overflow-y-auto custom-scrollbar relative">
-      {/* Dynamic Purple/Blue gradient background that grows with content */}
-      <div className="absolute inset-0 bg-black" />
-      <div 
-        ref={backgroundRef}
-        className="absolute top-0 left-0 right-0 bg-gradient-to-br from-purple-900/20 via-blue-900/15 to-purple-800/20 pointer-events-none" 
-        style={{ minHeight: '100vh' }} 
-      />
-      <div 
-        ref={gradientRef}
-        className="absolute top-0 left-0 right-0 bg-[radial-gradient(circle_at_30%_20%,rgba(147,51,234,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.1),transparent_50%)] pointer-events-none" 
-        style={{ minHeight: '100vh' }} 
-      />
+      {/* Simple static background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 shadow-2xl border border-purple-400/30 relative overflow-hidden" />
       
       {/* Enhanced Today indicator */}
       <div className="flex justify-center py-6 relative z-10">
