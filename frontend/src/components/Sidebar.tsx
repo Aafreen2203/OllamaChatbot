@@ -87,17 +87,12 @@ const Sidebar: React.FC = () => {
   return (
     <div
       ref={sidebarRef}
-      className="w-64 text-white flex flex-col h-full relative overflow-hidden shadow-2xl border-r border-purple-700/30 bg-gray-700/30"
+      className="w-64 text-white flex flex-col h-full relative overflow-hidden shadow-2xl border-r border-purple-500/20 bg-black/20 backdrop-blur-xl"
     >
-      {/* Enhanced animated background elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/15 to-purple-800/20 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(147,51,234,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.1),transparent_50%)] pointer-events-none" />
+      {/* Remove background elements for glass effect */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 via-blue-500 to-purple-400" />
       
-      {/* Floating glow orbs */}
-      <div className="absolute top-20 right-10 w-32 h-32 bg-purple-500/8 rounded-full blur-2xl animate-float-glow" />
-      <div className="absolute bottom-32 left-8 w-24 h-24 bg-blue-600/6 rounded-full blur-xl animate-float-glow" style={{ animationDelay: '2s' }} />
-
+      
       {/* Header */}
       <div ref={headerRef} className="relative p-4 border-b border-purple-700/40">
         <button

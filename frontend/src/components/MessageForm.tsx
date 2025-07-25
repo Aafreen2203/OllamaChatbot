@@ -91,7 +91,8 @@ const MessageForm = () => {
       {/* Form container - positioned normally without covering chats */}
       <div className="relative">
         <div className="relative px-6 py-8">
-          {/* Remove separate background - let it inherit from parent */}
+          {/* Transparent background with blur */}
+          <div className="absolute inset-0 bg-black/10 backdrop-blur-md" />
           
           {/* Subtle top border glow only */}
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
@@ -108,8 +109,8 @@ const MessageForm = () => {
                     {/* Pulsing glow effect */}
                     <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-purple-500/20 via-blue-500/15 to-purple-500/20 opacity-0 group-focus-within:opacity-100 blur-lg animate-pulse transition-opacity duration-500" />
                     
-                    {/* Transparent textarea container - no background, same as chat area */}
-                    <div className="relative rounded-3xl overflow-hidden border border-purple-500/20 group-focus-within:border-purple-500/40 transition-colors duration-300 bg-gray-800/60">
+                    {/* Transparent textarea container with glass effect */}
+                    <div className="relative rounded-3xl overflow-hidden border border-purple-500/20 group-focus-within:border-purple-500/40 transition-colors duration-300 bg-black/20 backdrop-blur-md">
                       <textarea
                         ref={textareaRef}
                         value={content}
@@ -117,7 +118,7 @@ const MessageForm = () => {
                         onKeyDown={handleKeyDown}
                         placeholder={currentChat ? "Type your message..." : "Create or select a chat to start messaging"}
                         disabled={!currentChat}
-                        className="relative w-full resize-none border-0 bg-gray-800/60 px-6 py-5 pr-16 text-gray-100 placeholder-gray-400/70 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-0 disabled:cursor-not-allowed rounded-3xl backdrop-blur-sm"
+                        className="relative w-full resize-none border-0 bg-transparent px-6 py-5 pr-16 text-gray-100 placeholder-gray-400/70 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-0 disabled:cursor-not-allowed rounded-3xl backdrop-blur-sm"
                         rows={1}
                         style={{ 
                           minHeight: "64px", 

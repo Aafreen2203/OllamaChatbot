@@ -43,8 +43,8 @@ const MessagesList = () => {
   if (!currentChat) {
     return (
       <div className="flex-1 flex items-center justify-center relative">
-        {/* Simple static background - same as chat area welcome chat */}
-        <div className="inset-0 bg-gradient-to-br from-purple-600/50 to-blue-600/35 shadow-2xl border border-purple-400/30 relative overflow-hidden" />
+        {/* Simple static background - transparent with blur */}
+        <div className="absolute inset-0 bg-black/10 backdrop-blur-md" />
         
         <div ref={welcomeRef} className="text-center max-w-md mx-auto p-8 relative z-10">
           <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl border border-purple-400/30 relative overflow-hidden">
@@ -111,8 +111,8 @@ const MessagesList = () => {
 
   return (
     <div className="flex-1 overflow-y-auto custom-scrollbar relative">
-      {/* Simple static background when he messages length increases */}
-      <div className="inset-0 bg-gradient-to-br from-purple-600/50 to-blue-600/30 shadow-2xl border border-purple-400/30 relative overflow-hidden" />
+      {/* Simple static background - transparent with blur */}
+      <div className="absolute inset-0 bg-black/10 backdrop-blur-md" />
       
       {/* Enhanced Today indicator */}
       <div className="flex justify-center py-6 relative z-10">
