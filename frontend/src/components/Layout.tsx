@@ -14,7 +14,7 @@ type Props = {
 
 const Layout = ({
   children,
-  title = "ChatGPT Clone - Ollama + Gemma",
+  title = "Nokat AI - ChatGPT Clone",
   description = "A ChatGPT-style chat application powered by Ollama and Gemma",
   favicon = "/img/logo.png",
 }: Props) => {
@@ -24,20 +24,20 @@ const Layout = ({
   useEffect(() => {
     // Initial layout animation
     if (layoutRef.current) {
-      gsap.fromTo(layoutRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" })
+      gsap.fromTo(layoutRef.current, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" })
     }
 
     if (mainRef.current) {
       gsap.fromTo(
         mainRef.current,
-        { x: 50, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8, delay: 0.3, ease: "power3.out" },
+        { x: 30, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, delay: 0.2, ease: "power2.out" },
       )
     }
   }, [])
 
   return (
-    <div className="font-basier-circle">
+    <div className="font-sans">
       <Head>
         <title>{title}</title>
         <meta name="description" content={description}></meta>
@@ -46,18 +46,10 @@ const Layout = ({
         <link rel="icon" href={favicon} />
       </Head>
 
-      <div
-        ref={layoutRef}
-        className="h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex relative overflow-hidden"
-      >
-        {/* Animated background elements */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(59,130,246,0.05),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(147,51,234,0.05),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_80%,rgba(236,72,153,0.05),transparent_50%)]" />
-
+      <div ref={layoutRef} className="h-screen bg-[#1a1d29] flex overflow-hidden">
         <Sidebar />
 
-        <div ref={mainRef} className="flex-1 flex flex-col relative">
+        <div ref={mainRef} className="flex-1 flex flex-col">
           {children}
         </div>
       </div>
