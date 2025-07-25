@@ -14,7 +14,7 @@ type Props = {
 
 const Layout = ({
   children,
-  title = "Nokat AI - ChatGPT Clone",
+  title = "Promptly AI - ChatGPT Clone",
   description = "A ChatGPT-style chat application powered by Ollama and Gemma",
   favicon = "/img/logo.png",
 }: Props) => {

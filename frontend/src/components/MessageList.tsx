@@ -43,7 +43,7 @@ const MessagesList = () => {
   if (!currentChat) {
     return (
       <div className="flex-1 flex items-center justify-center relative">
-        {/* Simple static background - same as chat area */}
+        {/* Simple static background - same as chat area welcome chat */}
         <div className="inset-0 bg-gradient-to-br from-purple-600/50 to-blue-600/35 shadow-2xl border border-purple-400/30 relative overflow-hidden" />
         
         <div ref={welcomeRef} className="text-center max-w-md mx-auto p-8 relative z-10">
@@ -60,7 +60,7 @@ const MessagesList = () => {
             </svg>
           </div>
           <h2 className="text-3xl font-bold mb-4 text-white bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            Welcome to Nokat AI
+            Welcome to Promptly AI
           </h2>
           <p className="text-gray-400 max-w-md mx-auto leading-relaxed text-lg">
             Select a chat from the sidebar or create a new one to get started with your AI conversation.
@@ -169,7 +169,7 @@ const MessagesList = () => {
                   {/* Enhanced AI label */}
                   {!isUser && (
                     <div className="flex items-center mb-3">
-                      <span className="text-sm text-purple-300 ml-14 font-medium">Nokat AI</span>
+                      <span className="text-sm text-purple-300 ml-14 font-medium">Promptly AI</span>
                     </div>
                   )}
 
@@ -249,8 +249,8 @@ const MessagesList = () => {
                       {/* Enhanced Model selector */}
                       <div className="ml-auto">
                         <select className="glass-enhanced bg-black/40 border border-purple-600/30 rounded-lg px-3 py-2 text-xs text-gray-300 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 hover:border-purple-400/40">
-                          <option>NokatFlax</option>
-                          <option>Nokat 2.0</option>
+                          <option>PromptlyFlax</option>
+                          <option>Promptly 2.0</option>
                         </select>
                       </div>
                     </div>
@@ -282,7 +282,7 @@ const MessagesList = () => {
               </div>
               <div className="flex flex-col max-w-[85%]">
                 <div className="flex items-center mb-3">
-                  <span className="text-sm text-blue-300 ml-14 font-medium">Nokat AI</span>
+                  <span className="text-sm text-blue-300 ml-14 font-medium">Promptly AI</span>
                 </div>
                 <div className="glass-enhanced border border-gray-600/30 rounded-2xl px-6 py-4 shadow-lg">
                   <div className="flex space-x-2">

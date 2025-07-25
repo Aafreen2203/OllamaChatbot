@@ -109,7 +109,7 @@ const MessageForm = () => {
                     <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-purple-500/20 via-blue-500/15 to-purple-500/20 opacity-0 group-focus-within:opacity-100 blur-lg animate-pulse transition-opacity duration-500" />
                     
                     {/* Transparent textarea container - no background, same as chat area */}
-                    <div className="relative rounded-3xl overflow-hidden border border-purple-500/20 group-focus-within:border-purple-500/40 transition-colors duration-300">
+                    <div className="relative rounded-3xl overflow-hidden border border-purple-500/20 group-focus-within:border-purple-500/40 transition-colors duration-300 bg-gray-800/60">
                       <textarea
                         ref={textareaRef}
                         value={content}
@@ -117,14 +117,13 @@ const MessageForm = () => {
                         onKeyDown={handleKeyDown}
                         placeholder={currentChat ? "Type your message..." : "Create or select a chat to start messaging"}
                         disabled={!currentChat}
-                        className="relative w-full resize-none border-0 bg-transparent px-6 py-5 pr-16 text-gray-100 placeholder-gray-400/70 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-0 disabled:cursor-not-allowed rounded-3xl backdrop-blur-sm"
+                        className="relative w-full resize-none border-0 bg-gray-800/60 px-6 py-5 pr-16 text-gray-100 placeholder-gray-400/70 transition-all duration-300 focus:outline-none focus:ring-0 focus:border-0 disabled:cursor-not-allowed rounded-3xl backdrop-blur-sm"
                         rows={1}
                         style={{ 
                           minHeight: "64px", 
                           maxHeight: "200px", 
                           outline: "none", 
-                          boxShadow: "none",
-                          background: "transparent" 
+                          boxShadow: "none"
                         }}
                       />
                       
@@ -159,16 +158,11 @@ const MessageForm = () => {
                           ref={buttonRef}
                           type="submit"
                           disabled={!content.trim() || !currentChat}
-                          className="group relative p-3.5 text-blue-400 hover:text-blue-300 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-110 disabled:hover:scale-100 rounded-xl"
+                          className="group relative p-3.5 text-blue-200 hover:text-blue-500 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-110 disabled:hover:scale-100 rounded-xl"
                           title="Send message (Enter)"
                         >
-                          {/* Enhanced glow effects */}
-                          <div className="absolute -inset-2 bg-blue-500/20 rounded-xl opacity-0 group-hover:opacity-100 group-disabled:opacity-0 transition-opacity duration-300 blur-lg" />
-                          <div className="absolute -inset-1 bg-blue-500/15 rounded-xl opacity-0 group-hover:opacity-100 group-disabled:opacity-0 transition-opacity duration-300 blur-sm" />
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/25 to-blue-600/25 rounded-xl opacity-0 group-hover:opacity-100 group-disabled:opacity-0 transition-opacity duration-300" />
-                          
                           <svg
-                            className="relative w-6 h-6 z-10 transform group-hover:rotate-12 group-disabled:rotate-0 transition-transform duration-300"
+                            className="relative w-6 h-6 z-10 transform rotate-90 group-hover:rotate-[102deg] group-disabled:rotate-90 transition-transform duration-300"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -180,8 +174,6 @@ const MessageForm = () => {
                               d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
                             />
                           </svg>
-                          
-                          <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent rounded-xl pointer-events-none" />
                         </button>
                       )}
                     </div>

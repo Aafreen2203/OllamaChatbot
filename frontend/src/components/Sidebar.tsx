@@ -87,7 +87,7 @@ const Sidebar: React.FC = () => {
   return (
     <div
       ref={sidebarRef}
-      className="w-64 text-white flex flex-col h-full relative overflow-hidden shadow-2xl border-r border-purple-700/30 bg-black"
+      className="w-64 text-white flex flex-col h-full relative overflow-hidden shadow-2xl border-r border-purple-700/30 bg-gray-700/30"
     >
       {/* Enhanced animated background elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/15 to-purple-800/20 pointer-events-none" />
