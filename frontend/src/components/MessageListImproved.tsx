@@ -47,6 +47,20 @@ const MessagesList = () => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }
 
+  const formatMessageContent = (content: string) => {
+    // Simple markdown-like formatting
+    let formatted = content
+      // Bold text with **text** or *text*
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<strong>$1</strong>')
+      // Code blocks with `code`
+      .replace(/`(.*?)`/g, '<code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">$1</code>')
+      // Line breaks
+      .replace(/\n/g, '<br />')
+
+    return formatted
+  }
+
   if (!currentChat) {
     return null // MessageForm will handle the centered state
   }
@@ -75,9 +89,10 @@ const MessagesList = () => {
                     ? "bg-blue-600/90 text-white border-blue-500/30 shadow-blue-500/20" 
                     : "bg-white/90 dark:bg-gray-800/90 text-gray-900 dark:text-gray-100 border-gray-200/50 dark:border-gray-600/50"
                 }`}>
-                  <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                    {message.content}
-                  </div>
+                  <div 
+                    className="whitespace-pre-wrap text-sm leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: formatMessageContent(message.content) }}
+                  />
                   {message.role === "user" && (
                     <>
                       <div className="text-xs text-blue-100 mt-2 text-right opacity-80">
