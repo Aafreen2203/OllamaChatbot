@@ -6,7 +6,7 @@ import { useChatContext } from "../utils/useChatContext"
 import SearchBar from "./SearchBar"
 import ExportMenu from "./ExportMenu"
 
-const MessagesList = () => {
+const MessageListImproved = () => {
   const { messages, isStreaming, currentChat, copyToClipboard, regenerateResponse, sendMessage } = useChatContext()
   const [searchQuery, setSearchQuery] = useState("")
   const [showSearch, setShowSearch] = useState(false)
@@ -259,4 +259,4 @@ const MessagesList = () => {
   )
 }
 
-export default MessagesList
+export default MessageListImproved

@@ -4,7 +4,7 @@ import type React from "react"
 import { useState, useRef } from "react"
 
 interface FileUploadProps {
-  onFileSelect: (file: File, preview?: string) => void
+  onFileSelect: (file: File, preview?: string, content?: string) => void
   onRemoveFile: () => void
   selectedFile?: File | null
   preview?: string | null
@@ -21,15 +21,71 @@ const FileUpload: React.FC<FileUploadProps> = ({
   const [dragOver, setDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileSelect = (file: File) => {
+  const handleFileSelect = async (file: File) => {
     if (file.type.startsWith('image/')) {
+      // Handle image files
       const reader = new FileReader()
       reader.onload = (e) => {
-        onFileSelect(file, e.target?.result as string)
+        const imagePreview = e.target?.result as string
+        onFileSelect(file, imagePreview, `Please analyze this image: ${file.name}`)
       }
       reader.readAsDataURL(file)
+    } else if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
+      // Handle text files
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const textContent = e.target?.result as string
+        onFileSelect(file, undefined, textContent)
+      }
+      reader.readAsText(file)
+    } else if (file.type === 'application/json' || file.name.endsWith('.json')) {
+      // Handle JSON files
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const jsonContent = e.target?.result as string
+        try {
+          const parsedJson = JSON.parse(jsonContent)
+          const formattedJson = JSON.stringify(parsedJson, null, 2)
+          onFileSelect(file, undefined, `Here is the JSON file content:\n\`\`\`json\n${formattedJson}\n\`\`\``)
+        } catch (error) {
+          onFileSelect(file, undefined, `Error parsing JSON file: ${error}`)
+        }
+      }
+      reader.readAsText(file)
+    } else if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
+      // Handle CSV files
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const csvContent = e.target?.result as string
+        onFileSelect(file, undefined, `Here is the CSV file content:\n\`\`\`\n${csvContent}\n\`\`\``)
+      }
+      reader.readAsText(file)
+    } else if (file.type.startsWith('text/') || 
+               file.name.endsWith('.md') || 
+               file.name.endsWith('.js') || 
+               file.name.endsWith('.ts') || 
+               file.name.endsWith('.tsx') || 
+               file.name.endsWith('.jsx') || 
+               file.name.endsWith('.py') || 
+               file.name.endsWith('.java') || 
+               file.name.endsWith('.cpp') || 
+               file.name.endsWith('.c') || 
+               file.name.endsWith('.html') || 
+               file.name.endsWith('.css') || 
+               file.name.endsWith('.xml') || 
+               file.name.endsWith('.yaml') || 
+               file.name.endsWith('.yml')) {
+      // Handle code and text files
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const content = e.target?.result as string
+        const fileExtension = file.name.split('.').pop() || 'text'
+        onFileSelect(file, undefined, `Here is the ${fileExtension.toUpperCase()} file content:\n\`\`\`${fileExtension}\n${content}\n\`\`\``)
+      }
+      reader.readAsText(file)
     } else {
-      onFileSelect(file)
+      // For other file types, just provide basic info
+      onFileSelect(file, undefined, `File uploaded: ${file.name} (${file.type || 'unknown type'}) - ${(file.size / 1024).toFixed(1)} KB`)
     }
   }
 
