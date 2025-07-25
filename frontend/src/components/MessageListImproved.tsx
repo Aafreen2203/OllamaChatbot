@@ -1,11 +1,17 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { useChatContext } from "../utils/useChatContext"
+import SearchBar from "./SearchBar"
+import ExportMenu from "./ExportMenu"
 
 const MessagesList = () => {
   const { messages, isStreaming, currentChat, copyToClipboard, regenerateResponse, sendMessage } = useChatContext()
+  const [searchQuery, setSearchQuery] = useState("")
+  const [showSearch, setShowSearch] = useState(false)
+  const [showExport, setShowExport] = useState(false)
+  const [filteredMessages, setFilteredMessages] = useState(messages)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -13,9 +19,25 @@ const MessagesList = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
+  // Search functionality
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredMessages(messages)
+    } else {
+      const filtered = messages.filter(message =>
+        message.content.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      setFilteredMessages(filtered)
+    }
+  }, [messages, searchQuery])
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+  }
+
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+  }, [filteredMessages])
 
   useEffect(() => {
     // Animate new messages
@@ -25,7 +47,7 @@ const MessagesList = () => {
         gsap.fromTo(element, { y: 20, opacity: 0, scale: 0.95 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" })
       })
     }
-  }, [messages])
+  }, [filteredMessages])
 
   const handleCopy = async (content: string) => {
     await copyToClipboard(content)
@@ -67,8 +89,56 @@ const MessagesList = () => {
 
   return (
     <div className="flex-1 overflow-y-auto bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl">
+      {/* Header with search and export */}
+      <div className="sticky top-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl border-b border-gray-200/30 dark:border-gray-600/30 p-4 z-10">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            {currentChat?.title || "Chat"}
+          </h2>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setShowSearch(!showSearch)}
+              className={`p-2 rounded-lg transition-all duration-200 ${
+                showSearch
+                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                  : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400'
+              }`}
+              title="Search messages"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setShowExport(true)}
+              disabled={!currentChat || messages.length === 0}
+              className={`p-2 rounded-lg transition-all duration-200 ${
+                currentChat && messages.length > 0
+                  ? 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed opacity-50'
+              }`}
+              title={!currentChat || messages.length === 0 ? "No messages to export" : "Export chat"}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        {/* Search Bar */}
+        <SearchBar
+          isOpen={showSearch}
+          onSearch={handleSearch}
+          onClose={() => {
+            setShowSearch(false)
+            setSearchQuery("")
+          }}
+        />
+      </div>
+
       <div ref={containerRef} className="max-w-4xl mx-auto px-4 py-6">
-        {messages.map((message) => (
+        {filteredMessages.map((message) => (
           <div key={message.id} className="message-item mb-6 group">
             <div className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
               <div className={`max-w-3xl ${message.role === "user" ? "ml-12" : "mr-12"}`}>
@@ -175,6 +245,16 @@ const MessagesList = () => {
         
         <div ref={messagesEndRef} />
       </div>
+      
+      {/* Export Menu */}
+      {showExport && currentChat && (
+        <ExportMenu
+          chat={currentChat}
+          messages={messages}
+          isOpen={showExport}
+          onClose={() => setShowExport(false)}
+        />
+      )}
     </div>
   )
 }

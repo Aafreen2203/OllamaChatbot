@@ -1,6 +1,6 @@
 import { render, waitFor } from '@testing-library/react'
 
-import Layout from 'components/Layout'
+import Layout from 'components/LayoutClean'
 
 jest.mock('next/head', () => {
   return {
