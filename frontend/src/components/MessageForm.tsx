@@ -39,7 +39,15 @@ const MessageForm = () => {
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto"
-      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`
+      const newHeight = Math.min(textareaRef.current.scrollHeight, 200)
+      textareaRef.current.style.height = `${newHeight}px`
+      
+      // Show scrollbar only when content exceeds max height
+      if (textareaRef.current.scrollHeight > 200) {
+        textareaRef.current.style.overflowY = "auto"
+      } else {
+        textareaRef.current.style.overflowY = "hidden"
+      }
     }
   }
 
@@ -66,7 +74,11 @@ const MessageForm = () => {
                 disabled={!currentChat}
                 rows={1}
                 className={`w-full resize-none bg-transparent rounded-2xl pr-12 pl-4 py-3 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none disabled:cursor-not-allowed border-blue-400 border-1 ${!currentChat ? 'text-lg' : 'text-sm'}`}
-                style={{ minHeight: "40px", maxHeight: "200px" }}
+                style={{ 
+                  minHeight: "40px", 
+                  maxHeight: "200px",
+                  overflowY: "hidden"
+                }}
               />
               
               {/* Send button positioned inside the textarea */}
