@@ -91,12 +91,12 @@ const MessageForm = () => {
               />
               
               {/* Send Button */}
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+              <div className="absolute right-2 top-1/2 transform -translate-y-5 flex items-center space-x-2">
                 {isStreaming ? (
                   <button
                     type="button"
                     onClick={stopStreaming}
-                    className="p-3 rounded-xl bg-red-500 hover:bg-red-600 text-white transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="p-3 rounded-3xl bg-red-500 hover:bg-red-600 text-white transition-all duration-200 shadow-lg hover:shadow-xl"
                     title="Stop generating"
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -107,8 +107,8 @@ const MessageForm = () => {
                   <button
                     type="submit"
                     disabled={!content.trim()}
-                    className={`p-3 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl ${
-                      content.trim() && currentChat
+                    className={`p-3 rounded-3xl transition-all duration-200 shadow-lg hover:shadow-xl ${
+                      content.trim()
                         ? "bg-blue-600 hover:bg-blue-700 text-white"
                         : "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                     }`}
