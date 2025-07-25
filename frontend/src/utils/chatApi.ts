@@ -149,3 +149,20 @@ export const deleteChat = async (chatId: string): Promise<void> => {
     throw new Error('Failed to delete chat')
   }
 }
+
+// Rename a chat
+export const renameChat = async (chatId: string, newTitle: string): Promise<Chat> => {
+  const response = await fetch(`${BACKEND_URL}/chat/${chatId}/rename`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ title: newTitle })
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to rename chat')
+  }
+
+  return response.json()
+}

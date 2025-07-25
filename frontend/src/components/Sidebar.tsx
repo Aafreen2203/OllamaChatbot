@@ -1,12 +1,14 @@
 "use client"
 
 import type React from "react"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { useChatContext } from "../utils/useChatContext"
 
 const Sidebar: React.FC = () => {
-  const { chats, currentChat, createNewChat, selectChat, deleteChat } = useChatContext()
+  const { chats, currentChat, createNewChat, selectChat, deleteChat, renameChat } = useChatContext()
+  const [editingChatId, setEditingChatId] = useState<string | null>(null)
+  const [editingTitle, setEditingTitle] = useState("")
 
   const sidebarRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
@@ -68,6 +70,32 @@ const Sidebar: React.FC = () => {
     }
   }
 
+  const handleStartRename = (chatId: string, currentTitle: string) => {
+    setEditingChatId(chatId)
+    setEditingTitle(currentTitle)
+  }
+
+  const handleSaveRename = async (chatId: string) => {
+    if (editingTitle.trim() && editingTitle.trim() !== chats.find(c => c.id === chatId)?.title) {
+      await renameChat(chatId, editingTitle.trim())
+    }
+    setEditingChatId(null)
+    setEditingTitle("")
+  }
+
+  const handleCancelRename = () => {
+    setEditingChatId(null)
+    setEditingTitle("")
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent, chatId: string) => {
+    if (e.key === 'Enter') {
+      handleSaveRename(chatId)
+    } else if (e.key === 'Escape') {
+      handleCancelRename()
+    }
+  }
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     const now = new Date()
@@ -121,9 +149,9 @@ const Sidebar: React.FC = () => {
         className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar"
       >
         {chats.map((chat, index) => (
-          <div key={chat.id} className="chat-item" style={{ animationDelay: `${index * 0.1}s` }}>
+          <div key={chat.id} className="chat-item" style={{ animationDelay: `${index * 0.1}s` }} data-chat-id={chat.id}>
             <button
-              onClick={() => handleSelectChat(chat.id)}
+              onClick={() => editingChatId !== chat.id && handleSelectChat(chat.id)}
               className={`group w-full text-left p-3 rounded-xl transition-all duration-300 relative overflow-hidden transform hover:scale-[1.01] border ${
                 currentChat?.id === chat.id
                   ? "glass-enhanced bg-gradient-to-r from-purple-600/30 to-blue-500/30 text-white shadow-xl border-purple-400/40"
@@ -135,44 +163,84 @@ const Sidebar: React.FC = () => {
 
               <div className="relative flex items-center justify-between">
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium truncate text-sm mb-1">{chat.title}</div>
+                  {editingChatId === chat.id ? (
+                    <input
+                      type="text"
+                      value={editingTitle}
+                      onChange={(e) => setEditingTitle(e.target.value)}
+                      onKeyDown={(e) => handleKeyPress(e, chat.id)}
+                      onBlur={() => handleSaveRename(chat.id)}
+                      className="bg-transparent border-b border-purple-400/50 text-sm font-medium text-white focus:outline-none focus:border-purple-400 w-full mb-1"
+                      autoFocus
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  ) : (
+                    <div className="font-medium truncate text-sm mb-1">{chat.title}</div>
+                  )}
                   <div className="text-xs opacity-70">{formatDate(chat.createdAt)}</div>
                 </div>
 
-                <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                  <div
-                    className="p-1.5 rounded-lg hover:bg-white/10 cursor-pointer transition-all duration-200 glass-enhanced border border-gray-600/20"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      // TODO: Implement edit functionality
-                    }}
-                  >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                      />
-                    </svg>
+                {editingChatId === chat.id ? (
+                  <div className="flex items-center space-x-1">
+                    <div
+                      className="p-1.5 rounded-lg hover:bg-green-500/20 cursor-pointer transition-all duration-200 glass-enhanced border border-green-500/20"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleSaveRename(chat.id)
+                      }}
+                    >
+                      <svg className="w-3 h-3 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <div
+                      className="p-1.5 rounded-lg hover:bg-red-500/20 cursor-pointer transition-all duration-200 glass-enhanced border border-red-500/20"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleCancelRename()
+                      }}
+                    >
+                      <svg className="w-3 h-3 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </div>
                   </div>
-                  <div
-                    className="p-1.5 rounded-lg hover:bg-red-500/20 cursor-pointer transition-all duration-200 glass-enhanced border border-red-500/20"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleDeleteChat(chat.id)
-                    }}
-                  >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
+                ) : (
+                  <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                    <div
+                      className="p-1.5 rounded-lg hover:bg-white/10 cursor-pointer transition-all duration-200 glass-enhanced border border-gray-600/20"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleStartRename(chat.id, chat.title)
+                      }}
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
+                    </div>
+                    <div
+                      className="p-1.5 rounded-lg hover:bg-red-500/20 cursor-pointer transition-all duration-200 glass-enhanced border border-red-500/20"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleDeleteChat(chat.id)
+                      }}
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </button>
           </div>

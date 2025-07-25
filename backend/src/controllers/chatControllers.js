@@ -149,3 +149,24 @@ exports.deleteChat = async (req, res) => {
     res.status(500).json({ error: "Failed to delete chat" });
   }
 };
+
+exports.renameChat = async (req, res) => {
+  const { chatId } = req.params;
+  const { title } = req.body;
+
+  try {
+    if (!title || title.trim().length === 0) {
+      return res.status(400).json({ error: "Title is required" });
+    }
+
+    const updatedChat = await prisma.chat.update({
+      where: { id: chatId },
+      data: { title: title.trim() },
+    });
+
+    res.json(updatedChat);
+  } catch (error) {
+    console.error("Error renaming chat:", error);
+    res.status(500).json({ error: "Failed to rename chat" });
+  }
+};

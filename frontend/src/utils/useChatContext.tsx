@@ -8,7 +8,8 @@ import {
   stopStream, 
   getChats, 
   getChatHistory,
-  deleteChat as deleteChatApi 
+  deleteChat as deleteChatApi,
+  renameChat as renameChatApi
 } from './chatApi';
 
 interface ChatContextProps {
@@ -27,6 +28,7 @@ interface ChatContextProps {
   stopStreaming: () => Promise<void>;
   loadChats: () => Promise<void>;
   deleteChat: (chatId: string) => Promise<void>;
+  renameChat: (chatId: string, newTitle: string) => Promise<void>;
   copyToClipboard: (text: string) => Promise<void>;
   regenerateResponse: (messageId: string) => Promise<void>;
 }
@@ -301,6 +303,44 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     }
   };
 
+  // Rename a chat
+  const renameChat = async (chatId: string, newTitle: string) => {
+    if (!newTitle.trim()) {
+      addToast({
+        title: '⚠️ Invalid Title',
+        description: 'Chat title cannot be empty',
+        type: 'error',
+      });
+      return;
+    }
+
+    try {
+      const updatedChat = await renameChatApi(chatId, newTitle.trim());
+      
+      // Update the chats list
+      setChats(prev => prev.map(chat => 
+        chat.id === chatId ? updatedChat : chat
+      ));
+      
+      // Update current chat if it's the one being renamed
+      if (currentChat?.id === chatId) {
+        setCurrentChat(updatedChat);
+      }
+
+      addToast({
+        title: '✅ Renamed Successfully',
+        description: `Chat renamed to "${newTitle.trim()}"`,
+        type: 'success',
+      });
+    } catch (error) {
+      addToast({
+        title: '❌ Error',
+        description: 'Failed to rename chat',
+        type: 'error',
+      });
+    }
+  };
+
   const value: ChatContextProps = {
     currentChat,
     messages: displayMessages,
@@ -312,6 +352,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     stopStreaming,
     loadChats,
     deleteChat,
+    renameChat,
     copyToClipboard,
     regenerateResponse,
   };
