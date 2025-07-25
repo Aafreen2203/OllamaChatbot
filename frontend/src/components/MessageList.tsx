@@ -112,7 +112,7 @@ const MessagesList = () => {
   return (
     <div className="flex-1 overflow-y-auto custom-scrollbar relative">
       {/* Simple static background - transparent with blur */}
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-md" />
+      <div className="relative inset-0 bg-black/10 backdrop-blur-md" />
       
       {/* Enhanced Today indicator */}
       <div className="flex justify-center py-6 relative z-10">
