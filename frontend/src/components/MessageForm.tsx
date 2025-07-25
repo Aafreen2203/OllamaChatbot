@@ -85,7 +85,7 @@ const MessageForm = () => {
                 onChange={(e) => setContent(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={currentChat ? "Type your message..." : "Start a conversation..."}
-                className="w-full resize-none rounded-3xl border-0 bg-gray-100/80 dark:bg-gray-700/80 backdrop-blur-sm px-6 py-4 pr-14 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200 min-h-[56px] max-h-[200px] overflow-hidden"
+                className="w-full resize-none rounded-3xl border-0 bg-gray-200/80 dark:bg-gray-700/80 backdrop-blur-sm px-6 py-4 pr-14 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200 min-h-[56px] max-h-[200px] overflow-hidden shadow-lg hover:shadow-xl focus:shadow-xl"
                 rows={1}
                 disabled={isStreaming}
               />

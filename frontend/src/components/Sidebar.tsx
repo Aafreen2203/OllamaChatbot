@@ -104,7 +104,7 @@ const Sidebar: React.FC = () => {
   return (
     <div
       ref={sidebarRef}
-      className="w-64 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl flex flex-col h-full shadow-xl"
+      className="w-68 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl flex flex-col h-full shadow-xl"
     >
       {/* Header */}
       <div ref={headerRef} className="p-3">
