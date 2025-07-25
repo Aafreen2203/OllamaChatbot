@@ -1,118 +1,195 @@
-import React from 'react';
-import { useChatContext } from '../utils/useChatContext';
+"use client"
+
+import type React from "react"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
+import { useChatContext } from "../utils/useChatContext"
 
 const Sidebar: React.FC = () => {
-  const { 
-    chats, 
-    currentChat, 
-    createNewChat, 
-    selectChat,
-    deleteChat 
-  } = useChatContext();
+  const { chats, currentChat, createNewChat, selectChat, deleteChat } = useChatContext()
+
+  const sidebarRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const chatsRef = useRef<HTMLDivElement>(null)
+  const footerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // Initial sidebar animation
+    if (sidebarRef.current) {
+      gsap.fromTo(sidebarRef.current, { x: -300, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" })
+    }
+
+    // Stagger animation for header, chats, and footer
+    const timeline = gsap.timeline({ delay: 0.3 })
+    timeline
+      .fromTo(headerRef.current, { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" })
+      .fromTo(chatsRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.3")
+      .fromTo(
+        footerRef.current,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
+        "-=0.3",
+      )
+  }, [])
+
+  useEffect(() => {
+    // Animate chat items when they change
+    if (chatsRef.current) {
+      const chatItems = chatsRef.current.querySelectorAll(".chat-item")
+      gsap.fromTo(
+        chatItems,
+        { x: -20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: "power2.out" },
+      )
+    }
+  }, [chats])
+
+  const handleNewChat = () => {
+    // Animate button press
+    const button = headerRef.current?.querySelector("button")
+    if (button) {
+      gsap.to(button, {
+        scale: 0.95,
+        duration: 0.1,
+        yoyo: true,
+        repeat: 1,
+        ease: "power2.inOut",
+      })
+    }
+    createNewChat()
+  }
+
+  const handleSelectChat = (chatId: string) => {
+    selectChat(chatId)
+  }
+
+  const handleDeleteChat = (chatId: string) => {
+    if (window.confirm('Are you sure you want to delete this chat?')) {
+      deleteChat(chatId)
+    }
+  }
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-    const messageDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const date = new Date(dateString)
+    const now = new Date()
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000)
+    const messageDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
 
     if (messageDate.getTime() === today.getTime()) {
-      return 'Today';
+      return "Today"
     } else if (messageDate.getTime() === yesterday.getTime()) {
-      return 'Yesterday';
+      return "Yesterday"
     } else {
-      return date.toLocaleDateString();
+      return date.toLocaleDateString()
     }
-  };
+  }
 
   return (
-    <div className="w-64 bg-gray-900 text-white flex flex-col h-full">
+    <div
+      ref={sidebarRef}
+      className="w-80 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white flex flex-col h-full relative overflow-hidden shadow-2xl"
+    >
+      {/* Animated background elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+
       {/* Header */}
-      <div className="p-4 border-b border-gray-700">
+      <div ref={headerRef} className="relative p-6 border-b border-gray-700/50">
         <button
-          onClick={createNewChat}
-          className="w-full bg-gray-800 hover:bg-gray-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+          onClick={handleNewChat}
+          className="group w-full bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white py-4 px-6 rounded-2xl transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
         >
-          <svg 
-            className="w-4 h-4" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M12 4v16m8-8H4" 
-            />
-          </svg>
-          <span>New Chat</span>
+          <div className="relative">
+            <div className="absolute inset-0 bg-white/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <svg
+              className="relative w-5 h-5 transform group-hover:rotate-90 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+          </div>
+          <span className="font-semibold">New Chat</span>
         </button>
       </div>
 
       {/* Chat History */}
-      <div className="flex-1 overflow-y-auto p-2">
-        <div className="space-y-1">
-          {chats.map((chat) => (
+      <div
+        ref={chatsRef}
+        className="flex-1 overflow-y-auto p-4 space-y-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent"
+      >
+        {chats.map((chat, index) => (
+          <div key={chat.id} className="chat-item" style={{ animationDelay: `${index * 0.1}s` }}>
             <button
-              key={chat.id}
-              onClick={() => selectChat(chat.id)}
-              className={`w-full text-left p-3 rounded-lg transition-colors duration-200 group hover:bg-gray-800 ${
-                currentChat?.id === chat.id 
-                  ? 'bg-gray-800 text-white' 
-                  : 'text-gray-300 hover:text-white'
+              onClick={() => handleSelectChat(chat.id)}
+              className={`group w-full text-left p-4 rounded-xl transition-all duration-300 relative overflow-hidden transform hover:scale-[1.02] ${
+                currentChat?.id === chat.id
+                  ? "bg-gradient-to-r from-blue-600/80 to-purple-600/80 text-white shadow-lg"
+                  : "text-gray-300 hover:text-white hover:bg-gray-800/50"
               }`}
             >
-              <div className="flex items-center justify-between">
+              {/* Hover effect background */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              <div className="relative flex items-center justify-between">
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium truncate">
-                    {chat.title}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {formatDate(chat.createdAt)}
-                  </div>
+                  <div className="font-medium truncate text-lg mb-1">{chat.title}</div>
+                  <div className="text-sm opacity-70">{formatDate(chat.createdAt)}</div>
                 </div>
-                <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+
+                <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
                   <div
-                    className="p-1 rounded hover:bg-gray-700 cursor-pointer"
+                    className="p-2 rounded-lg hover:bg-white/10 cursor-pointer transition-colors duration-200"
                     onClick={(e) => {
-                      e.stopPropagation();
+                      e.stopPropagation()
                       // TODO: Implement edit functionality
                     }}
                   >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
                     </svg>
                   </div>
                   <div
-                    className="p-1 rounded hover:bg-gray-700 cursor-pointer"
+                    className="p-2 rounded-lg hover:bg-red-500/20 cursor-pointer transition-colors duration-200"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      if (window.confirm('Are you sure you want to delete this chat?')) {
-                        deleteChat(chat.id);
-                      }
+                      e.stopPropagation()
+                      handleDeleteChat(chat.id)
                     }}
                   >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
                     </svg>
                   </div>
                 </div>
               </div>
             </button>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t border-gray-700">
-        <div className="text-xs text-gray-500 text-center">
-          Powered by Ollama + Gemma
+      <div ref={footerRef} className="relative p-6 border-t border-gray-700/50">
+        <div className="text-center">
+          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-gray-800/50 to-gray-700/50 rounded-full backdrop-blur-sm">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+            <span className="text-sm text-gray-400">Powered by Ollama + Gemma</span>
+          </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default Sidebar;
