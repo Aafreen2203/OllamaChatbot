@@ -7,7 +7,8 @@ import {
   sendMessage as sendMessageApi, 
   stopStream, 
   getChats, 
-  getChatHistory 
+  getChatHistory,
+  deleteChat as deleteChatApi 
 } from './chatApi';
 
 interface ChatContextProps {
@@ -25,6 +26,7 @@ interface ChatContextProps {
   sendMessage: (content: string) => Promise<void>;
   stopStreaming: () => Promise<void>;
   loadChats: () => Promise<void>;
+  deleteChat: (chatId: string) => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextProps | undefined>(undefined);
@@ -198,6 +200,24 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     return messages;
   }, [messages, currentStreamingMessage, isStreaming, currentChat?.id]);
 
+  // Delete a chat
+  const deleteChat = async (chatId: string) => {
+    try {
+      await deleteChatApi(chatId);
+      
+      // Remove the chat from the chats list
+      setChats(prev => prev.filter(chat => chat.id !== chatId));
+      
+      // If the deleted chat was the current chat, clear it
+      if (currentChat?.id === chatId) {
+        setCurrentChat(null);
+        setMessages([]);
+      }
+    } catch (error) {
+      console.error('Error deleting chat:', error);
+    }
+  };
+
   const value: ChatContextProps = {
     currentChat,
     messages: displayMessages,
@@ -208,6 +228,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     sendMessage,
     stopStreaming,
     loadChats,
+    deleteChat,
   };
 
   return (

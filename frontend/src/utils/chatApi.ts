@@ -135,3 +135,17 @@ export const getChatHistory = async (chatId: string): Promise<Message[]> => {
 
   return response.json()
 }
+
+// Delete a chat
+export const deleteChat = async (chatId: string): Promise<void> => {
+  const response = await fetch(`${BACKEND_URL}/chat/${chatId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to delete chat')
+  }
+}

@@ -6,7 +6,8 @@ const Sidebar: React.FC = () => {
     chats, 
     currentChat, 
     createNewChat, 
-    selectChat 
+    selectChat,
+    deleteChat 
   } = useChatContext();
 
   const formatDate = (dateString: string) => {
@@ -88,7 +89,9 @@ const Sidebar: React.FC = () => {
                     className="p-1 rounded hover:bg-gray-700 cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
-                      // TODO: Implement delete functionality
+                      if (window.confirm('Are you sure you want to delete this chat?')) {
+                        deleteChat(chat.id);
+                      }
                     }}
                   >
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
