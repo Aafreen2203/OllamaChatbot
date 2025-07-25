@@ -27,6 +27,8 @@ interface ChatContextProps {
   stopStreaming: () => Promise<void>;
   loadChats: () => Promise<void>;
   deleteChat: (chatId: string) => Promise<void>;
+  copyToClipboard: (text: string) => Promise<void>;
+  regenerateResponse: (messageId: string) => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextProps | undefined>(undefined);
@@ -218,6 +220,87 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     }
   };
 
+  // Copy text to clipboard
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      addToast({
+        title: '✅ Copied!',
+        description: 'Text copied to clipboard successfully',
+        type: 'success',
+      });
+    } catch (error) {
+      // Fallback for older browsers
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        addToast({
+          title: '✅ Copied!',
+          description: 'Text copied to clipboard successfully',
+          type: 'success',
+        });
+      } catch (fallbackError) {
+        addToast({
+          title: '❌ Error',
+          description: 'Failed to copy to clipboard',
+          type: 'error',
+        });
+      }
+    }
+  };
+
+  // Regenerate AI response
+  const regenerateResponse = async (messageId: string) => {
+    if (!currentChat || isStreaming) return;
+
+    try {
+      // Find the user message that preceded this AI response
+      const messageIndex = messages.findIndex(msg => msg.id === messageId);
+      if (messageIndex <= 0) {
+        addToast({
+          title: '⚠️ Cannot Regenerate',
+          description: 'No previous user message found',
+          type: 'error',
+        });
+        return;
+      }
+
+      const userMessage = messages[messageIndex - 1];
+      if (userMessage.role !== 'user') {
+        addToast({
+          title: '⚠️ Cannot Regenerate',
+          description: 'Previous message is not from user',
+          type: 'error',
+        });
+        return;
+      }
+
+      addToast({
+        title: '🔄 Regenerating...',
+        description: 'Creating a new response',
+        type: 'info',
+      });
+
+      // Remove the AI response and any messages after it
+      const updatedMessages = messages.slice(0, messageIndex);
+      setMessages(updatedMessages);
+
+      // Regenerate the response by sending the user message again
+      await sendMessage(userMessage.content);
+    } catch (error) {
+      addToast({
+        title: '❌ Error',
+        description: 'Failed to regenerate response',
+        type: 'error',
+      });
+    }
+  };
+
   const value: ChatContextProps = {
     currentChat,
     messages: displayMessages,
@@ -229,6 +312,8 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     stopStreaming,
     loadChats,
     deleteChat,
+    copyToClipboard,
+    regenerateResponse,
   };
 
   return (

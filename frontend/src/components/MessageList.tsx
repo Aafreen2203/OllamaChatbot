@@ -8,7 +8,7 @@ import { useChatContext } from "../utils/useChatContext"
 gsap.registerPlugin(ScrollTrigger)
 
 const MessagesList = () => {
-  const { messages, isStreaming, currentChat } = useChatContext()
+  const { messages, isStreaming, currentChat, copyToClipboard, regenerateResponse } = useChatContext()
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const welcomeRef = useRef<HTMLDivElement>(null)
@@ -210,22 +210,12 @@ const MessagesList = () => {
                   {/* Enhanced Action buttons for AI messages */}
                   {!isUser && !isStreamingMessage && (
                     <div className="flex items-center space-x-3 mt-4 ml-14 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                      <button className="p-2 text-gray-500 hover:text-purple-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-purple-400/40 hover:shadow-lg hover:shadow-purple-500/20">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                          />
-                        </svg>
-                      </button>
-                      <button className="p-2 text-gray-500 hover:text-green-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-green-400/40 hover:shadow-lg hover:shadow-green-500/20">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 13l3 3 7-7" />
-                        </svg>
-                      </button>
-                      <button className="p-2 text-gray-500 hover:text-blue-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-blue-400/40 hover:shadow-lg hover:shadow-blue-500/20">
+                      {/* Copy button */}
+                      <button 
+                        onClick={() => copyToClipboard(message.content)}
+                        className="p-2 text-gray-500 hover:text-blue-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-blue-400/40 hover:shadow-lg hover:shadow-blue-500/20"
+                        title="Copy response"
+                      >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path
                             strokeLinecap="round"
@@ -235,13 +225,31 @@ const MessagesList = () => {
                           />
                         </svg>
                       </button>
-                      <button className="p-2 text-gray-500 hover:text-pink-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-pink-400/40 hover:shadow-lg hover:shadow-pink-500/20">
+                      
+                      {/* Regenerate button */}
+                      <button 
+                        onClick={() => regenerateResponse(message.id)}
+                        className="p-2 text-gray-500 hover:text-purple-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-purple-400/40 hover:shadow-lg hover:shadow-purple-500/20"
+                        title="Regenerate response"
+                      >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth={2}
                             d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                          />
+                        </svg>
+                      </button>
+
+                      {/* Like button */}
+                      <button className="p-2 text-gray-500 hover:text-green-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-green-400/40 hover:shadow-lg hover:shadow-green-500/20">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
                           />
                         </svg>
                       </button>
@@ -253,6 +261,26 @@ const MessagesList = () => {
                           <option>Promptly 2.0</option>
                         </select>
                       </div>
+                    </div>
+                  )}
+
+                  {/* Copy button for user messages */}
+                  {isUser && (
+                    <div className="flex items-center justify-end space-x-3 mt-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                      <button 
+                        onClick={() => copyToClipboard(message.content)}
+                        className="p-2 text-gray-500 hover:text-blue-400 transition-all duration-200 glass-enhanced rounded-lg border border-gray-600/20 hover:border-blue-400/40 hover:shadow-lg hover:shadow-blue-500/20"
+                        title="Copy prompt"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </button>
                     </div>
                   )}
                 </div>
