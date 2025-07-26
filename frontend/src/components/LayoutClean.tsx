@@ -68,8 +68,8 @@ const Layout = ({
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           className={`fixed z-50 md:hidden p-2 transition-all duration-300 ${
             isSidebarOpen 
-              ? 'top-4 right-4 bg-transparent border-0 text-gray-900 dark:text-white hover:bg-white/10' 
-              : 'top-4 left-4 bg-transparent border-0 text-gray-900 dark:text-white hover:bg-white/10'
+              ? 'top-4 right-4 bg-transparent border-0 text-gray-900 dark:text-white' 
+              : 'top-4 left-4 bg-transparent border-0 text-gray-900 dark:text-white'
           }`}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
