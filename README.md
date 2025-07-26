@@ -745,7 +745,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 ### **📢 Connect & Follow**
 
 - **GitHub**: [@Aafreen2203](https://github.com/Aafreen2203)
-- **LinkedIn**: [Connect with me](www.linkedin.com/in/aafreenkhan-m2204)
+- **LinkedIn**: [Connect with me](https://www.linkedin.com/in/aafreenkhan-m2204)
 
 ---
 
