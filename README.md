@@ -1,5 +1,21 @@
-# 🚀 Pro- [✨ What Makes This Unique](#-what-makes-this-project-unique)
+# 🚀 Promptly - Professional ChatGPT Clone
 
+> **An advanced, full-stack ChatGPT-style AI chat application with enterprise-grade features**
+
+**Promptly** is a comprehensive AI chat platform built with modern web technologies, featuring real-time streaming responses, intelligent search, multi-format export, and a beautiful responsive interface. Unlike basic ChatGPT clones, Promptly includes professional-grade features like smart search with highlighting, mobile-first responsive design, dark/light themes, and advanced chat management - all powered by local AI processing for complete privacy.
+
+**🎯 Key Highlights:**
+
+- 🤖 **Local AI Processing** - Powered by Ollama with Gemma model (no API keys needed)
+- 🔍 **Smart Search** - Real-time message search with auto-scroll highlighting
+- 📤 **Multi-format Export** - Export chats as TXT, Markdown, or JSON
+- 📱 **Mobile-First Design** - Responsive interface with touch optimization
+- ⚡ **Real-time Streaming** - Token-by-token AI response streaming
+- 🎨 **Professional UI/UX** - Glass morphism design with smooth animations
+
+## 📚 **TABLE OF CONTENTS**
+
+- [✨ What Makes This Unique](#-what-makes-this-project-unique)
 - [🎪 Demo Video](#-demo-video)
 - [🚀 Core Features](#-core-features)
 - [🛠️ Tech Stack](#-tech-stack--architecture)
@@ -14,29 +30,6 @@
 - [🚢 Deployment](#-deployment-guide)
 - [🏆 Project Highlights](#-project-highlights--achievements)
 - [📊 Project Showcase](#-project-showcase)
-- [🙏 Acknowledgments](#-acknowledgments--credits)
-- [📄 License](#-license--usage)T Clone - Advanced AI Chat Platform
-
-> **A feature-rich, enterprise-grade ChatGPT-style application that goes beyond basic chat functionality**
-
-A comprehensive full-stack chat application built with Next.js, Node.js, PostgreSQL, and Ollama with Gemma model - enhanced with **professional-grade features** that make it stand out from typical ChatGPT clones.
-
-## 📚 **TABLE OF CONTENTS**
-
-- [✨ What Makes This Unique](#-what-makes-this-project-unique)
-- [🎪 Demo Video](#-demo-video)
-- [🚀 Core Features](#-core-features)
-- [🛠️ Tech Stack](#-tech-stack--architecture)
-- [🏆 Advanced Functionality](#-advanced-functionality-sh## 📊 **PROJECT SHOWCASE**wcase)
-- [📋 System Requirements](#-system-requirements)
-- [⚡ Quick Start Guide](#-quick-start-guide)
-- [🎯 Feature Walkthrough](#-feature-walkthrough)
-- [🔧 Configuration](#-configuration--customization)
-- [🔄 API Documentation](#-api-documentation)
-- [🐛 Troubleshooting](#-troubleshooting-guide)
-- [📝 Development](#-development--architecture)
-- [🚢 Deployment](#-deployment-guide)
-- [🏆 Project Highlights](#-project-highlights--achievements)
 - [🙏 Acknowledgments](#-acknowledgments--credits)
 - [📄 License](#-license--usage)
 
