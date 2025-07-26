@@ -48,7 +48,7 @@
 
 ## 🎪 **DEMO VIDEO**
 
-📺 **[Watch Full Demo Here](https://drive.google.com/your-demo-link)** - Complete walkthrough showing:
+📺 **[Watch Full Demo Here](https://drive.google.com/file/d/1g0xubmDajVWoolkuraGJR-BbYKgts3Du/view?usp=drive_link)** - Complete walkthrough showing:
 
 - ✅ Chat interface with streaming responses
 - ✅ New Chat functionality and chat management
@@ -745,7 +745,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 ### **📢 Connect & Follow**
 
 - **GitHub**: [@Aafreen2203](https://github.com/Aafreen2203)
-- **LinkedIn**: [Connect with me](https://linkedin.com/in/aafreen-ahmad)
+- **LinkedIn**: [Connect with me](www.linkedin.com/in/aafreenkhan-m2204)
 
 ---
 
