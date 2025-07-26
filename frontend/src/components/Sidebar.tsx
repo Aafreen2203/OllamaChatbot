@@ -6,7 +6,11 @@ import { gsap } from "gsap"
 import { useChatContext } from "../utils/useChatContext"
 import { useTheme } from "../utils/useTheme"
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  onClose?: () => void
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
   const { chats, currentChat, createNewChat, selectChat, deleteChat, renameChat } = useChatContext()
   const { theme, toggleTheme } = useTheme()
   const [editingChatId, setEditingChatId] = useState<string | null>(null)
@@ -47,10 +51,12 @@ const Sidebar: React.FC = () => {
 
   const handleNewChat = () => {
     createNewChat()
+    onClose?.()
   }
 
   const handleSelectChat = (chatId: string) => {
     selectChat(chatId)
+    onClose?.()
   }
 
   const handleDeleteChat = (chatId: string) => {
@@ -104,7 +110,7 @@ const Sidebar: React.FC = () => {
   return (
     <div
       ref={sidebarRef}
-      className="w-68 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl flex flex-col h-full shadow-xl"
+      className="w-80 md:w-72 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl flex flex-col h-full shadow-xl"
     >
       {/* Header */}
       <div ref={headerRef} className="p-3">
@@ -177,32 +183,34 @@ const Sidebar: React.FC = () => {
                 </div>
 
                 {editingChatId === chat.id ? (
-                  <div className="flex items-center space-x-1">
+                  <div className="flex items-center justify-center space-x-1 min-w-[60px] flex-shrink-0">
                     <button
-                      className="p-2 rounded-lg hover:bg-green-100/80 dark:hover:bg-green-900/30 text-green-600 dark:text-green-400 transition-all duration-200 backdrop-blur-sm"
+                      className="p-1.5 rounded-lg hover:bg-green-100/80 dark:hover:bg-green-900/30 text-green-600 dark:text-green-400 transition-all duration-200 backdrop-blur-sm flex items-center justify-center"
                       onClick={(e) => {
                         e.stopPropagation()
                         handleSaveRename(chat.id)
                       }}
+                      title="Save"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </button>
                     <button
-                      className="p-2 rounded-lg hover:bg-red-100/80 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 transition-all duration-200 backdrop-blur-sm"
+                      className="p-1.5 rounded-lg hover:bg-red-100/80 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 transition-all duration-200 backdrop-blur-sm flex items-center justify-center"
                       onClick={(e) => {
                         e.stopPropagation()
                         handleCancelRename()
                       }}
+                      title="Cancel"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
                   </div>
                 ) : (
-                  <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0">
                     <button
                       className="p-2 rounded-lg hover:bg-gray-200/80 dark:hover:bg-gray-700/50 text-gray-500 dark:text-gray-400 transition-all duration-200 backdrop-blur-sm"
                       onClick={(e) => {

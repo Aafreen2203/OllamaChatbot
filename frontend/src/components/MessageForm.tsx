@@ -75,7 +75,7 @@ const MessageForm = () => {
 
   return (
     <div className={containerClass}>
-      <div ref={formRef} className={`max-w-4xl mx-auto ${!currentChat ? 'w-full max-w-2xl' : ''}`}>
+      <div ref={formRef} className={`max-w-4xl mx-auto px-4 md:px-0 ${!currentChat ? 'w-full max-w-2xl' : ''}`}>
         <form onSubmit={handleSubmit} className="relative">
           <div className={`rounded-5xl ${!currentChat ? 'p-6' : 'p-4'}`}>
             <div className="relative">

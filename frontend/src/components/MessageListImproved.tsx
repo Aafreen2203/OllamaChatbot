@@ -141,7 +141,7 @@ const MessageListImproved = () => {
         {filteredMessages.map((message) => (
           <div key={message.id} className="message-item mb-6 group">
             <div className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-3xl ${message.role === "user" ? "ml-12" : "mr-12"}`}>
+              <div className={`max-w-3xl ${message.role === "user" ? "ml-4 md:ml-12" : "mr-4 md:mr-12"}`}>
                 {message.role === "assistant" && (
                   <div className="flex items-center mb-2">
                     <div className="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mr-3 shadow-lg">
@@ -222,7 +222,7 @@ const MessageListImproved = () => {
         
         {isStreaming && (
           <div className="flex justify-start mb-6">
-            <div className="max-w-3xl mr-12">
+            <div className="max-w-3xl mr-4 md:mr-12">
               <div className="flex items-center mb-2">
                 <div className="w-7 h-7 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mr-3 shadow-lg">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
