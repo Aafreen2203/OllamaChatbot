@@ -39,6 +39,26 @@ const MessageListImproved = () => {
     scrollToBottom()
   }, [filteredMessages])
 
+  // Scroll to first search result with proper offset
+  useEffect(() => {
+    if (searchQuery.trim() && containerRef.current) {
+      // Use setTimeout to ensure the DOM has updated with highlights
+      setTimeout(() => {
+        const firstHighlight = containerRef.current?.querySelector('.search-highlight')
+        if (firstHighlight) {
+          const elementTop = firstHighlight.getBoundingClientRect().top + window.pageYOffset
+          const headerHeight = 120 // Account for sticky header height
+          const offset = elementTop - headerHeight
+          
+          window.scrollTo({
+            top: offset,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
+    }
+  }, [searchQuery, filteredMessages])
+
   useEffect(() => {
     // Animate new messages
     if (containerRef.current) {
@@ -79,6 +99,12 @@ const MessageListImproved = () => {
       .replace(/`(.*?)`/g, '<code class="bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">$1</code>')
       // Line breaks
       .replace(/\n/g, '<br />')
+
+    // Highlight search terms
+    if (searchQuery.trim()) {
+      const searchRegex = new RegExp(`(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
+      formatted = formatted.replace(searchRegex, '<mark class="bg-yellow-300 dark:bg-yellow-500 text-gray-900 dark:text-gray-100 px-1 py-0.5 rounded-sm search-highlight font-medium shadow-sm">$1</mark>')
+    }
 
     return formatted
   }
