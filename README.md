@@ -30,7 +30,6 @@
 - [🚢 Deployment](#-deployment-guide)
 - [🏆 Project Highlights](#-project-highlights--achievements)
 - [📊 Project Showcase](#-project-showcase)
-- [🙏 Acknowledgments](#-acknowledgments--credits)
 - [📄 License](#-license--usage)
 
 ## ✨ **WHAT MAKES THIS PROJECT UNIQUE**
