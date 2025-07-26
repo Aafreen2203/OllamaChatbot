@@ -1,7 +1,8 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { Chat, Message } from "../utils/chatApi"
 
 interface ExportMenuProps {
@@ -13,6 +14,20 @@ interface ExportMenuProps {
 
 const ExportMenu: React.FC<ExportMenuProps> = ({ chat, messages, isOpen, onClose }) => {
   const [exporting, setExporting] = useState(false)
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+
+    // Cleanup function to restore scroll when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
 
   const exportAsText = () => {
     const content = [
@@ -89,9 +104,45 @@ const ExportMenu: React.FC<ExportMenuProps> = ({ chat, messages, isOpen, onClose
 
   if (!isOpen) return null
 
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-      <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-gray-200/50 dark:border-gray-600/50 min-w-96">
+  // Create the modal content
+  const modalContent = (
+    <>
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes scaleIn {
+          from { 
+            opacity: 0; 
+            transform: scale(0.95) translateY(-10px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: scale(1) translateY(0); 
+          }
+        }
+      `}</style>
+      <div 
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+        style={{ 
+          animation: 'fadeIn 0.2s ease-out',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: 9999
+        }}
+      >
+        <div 
+          className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-gray-200/50 dark:border-gray-600/50 min-w-96 max-w-md w-full transform transition-all duration-200"
+          style={{
+            animation: 'scaleIn 0.2s ease-out',
+            maxHeight: 'calc(100vh - 2rem)',
+            overflow: 'auto'
+          }}
+        >
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Export Chat</h3>
           <button
@@ -153,7 +204,13 @@ const ExportMenu: React.FC<ExportMenuProps> = ({ chat, messages, isOpen, onClose
         )}
       </div>
     </div>
+    </>
   )
+
+  // Use createPortal to render directly to document.body
+  return typeof window !== 'undefined' 
+    ? createPortal(modalContent, document.body)
+    : null
 }
 
 export default ExportMenu
